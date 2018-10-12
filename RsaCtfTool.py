@@ -269,7 +269,7 @@ class RSAAttack(object):
             self.priv_key = PrivateKey(int(self.pub_key.p), int(self.pub_key.q),
                                        int(self.pub_key.e), int(self.pub_key.n))
         
-        print ("\t[+] Performing Alternative Weiner Attack"
+        print ("\t[+] Performing Alternative Weiner Attack")
         key_data = wiener_alt(self.pub_key.n, self.pub_key.e)
         if key_data is not None:
             key = RSA.importKey(key_data)
