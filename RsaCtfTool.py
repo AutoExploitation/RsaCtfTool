@@ -20,6 +20,7 @@ import requests
 import re
 import argparse
 import os
+from sage import *
 import subprocess
 from glob import glob
 import tempfile
@@ -230,6 +231,27 @@ class RSAAttack(object):
         except Exception as e:
             return
 
+    
+    def wiener_alt(n, e):
+        m = 12345
+        c = pow(m, e, n)
+        q0 = 1
+
+        list1 = continued_fraction(Integer(e)/Integer(n))
+        conv = list1.convergents()
+        for i in conv:
+            k = i.numerator()
+            q1 = i.denominator()
+            
+            for r in range(30):
+                for s in range(30):
+                    d = r*q1 + s*q0
+                    m1 = pow(c, d, n)
+                    if m1 == m:
+                        return d
+            q0 = q1
+        return None        
+        
     def wiener(self):
         # this attack module can be optional based on sympy and wiener_attack.py existing
         try:
@@ -246,7 +268,21 @@ class RSAAttack(object):
             self.pub_key.q = wiener.q
             self.priv_key = PrivateKey(int(self.pub_key.p), int(self.pub_key.q),
                                        int(self.pub_key.e), int(self.pub_key.n))
-
+        
+        print ("\t[+] Performing Alternative Weiner Attack"
+        key_data = wiener_alt(self.pub_key.n, self.pub_key.e)
+        if key_data is not None:
+            key = RSA.importKey(key_data)
+            print("[*] n: " + str(self.pub_key.n))
+            print("[*] e: " + str(self.pub_key.e))
+            print("[*] d: " + str(key.d))
+            print("[*] p: " + str(key.p))
+            self.pub_key.p = key.p
+            print("[*] q: " + str(key.q))
+            self.pub_key.q = key.q
+            self.priv_key = PrivateKey(int(self.pub_key.p), int(self.pub_key.q),
+                                       int(self.pub_key.e), int(self.pub_key.n))
+        
         return
 
     def primefac(self, primefac_timeout=45):
