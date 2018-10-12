@@ -232,7 +232,7 @@ class RSAAttack(object):
             return
 
     
-    def wiener_alt(n, e):
+    def wiener_alt(self, n, e):
         m = 12345
         c = pow(m, e, n)
         q0 = 1
