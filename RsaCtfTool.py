@@ -20,7 +20,7 @@ import requests
 import re
 import argparse
 import os
-from sage import *
+from sage.all import *
 import subprocess
 from glob import glob
 import tempfile
