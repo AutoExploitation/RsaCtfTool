@@ -1,6 +1,6 @@
 # RsaCtfTool
 A fork of RSA tool for ctf - uncipher data from weak public key and try to recover private key
-Automatic selection of best attack for the given public key. This fork adds the extra weiner atack when d is only a few bits bigger than N^(1/4)
+Automatic selection of best attack for the given public key. This fork adds the extra wiener atack when d is only a few bits bigger than N^(1/4)
 
 Attacks :
  - Weak public key factorization
